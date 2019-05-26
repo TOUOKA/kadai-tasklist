@@ -1,8 +1,11 @@
+ <div class="row">
+  <div class="col-6">
+ 
  <%= form_with(model: task, local: true) do |f| %>
  
  <% if task.errors.any? %>
  
-    <div id="error_explanation">
+    <div id="error_explanation" class="alert alert-warning">
       <ul>       
        
  <% task.errors.full_messages.each do |msg| %>  
@@ -16,15 +19,26 @@
      </div>
      
   <% end %>
-     
- <%= f.label :content, 'タスク' %>
- 
- <%= f.text_field :content %>
- 
- <%= f.label :status, '進行状況' %>
- 
- <%= f.text_field :status %>
 
- <%= f.submit '投稿' %>
+<div class="form-group">  
+     
+ <%= f.label :content, 'Task' %>
+ 
+ <%= f.text_field :content, class: 'form-control'  %>
+
+ </div>
+ 
+<div class="form-group">
+    
+ <%= f.label :status, 'Status' %>
+ 
+ <%= f.text_field :status, class: 'form-control'  %>
+
+ </div>
+
+ <%= f.submit 'Post！', class: 'btn btn-primary' %>
  
  <% end %>
+ 
+ </div>
+</div>

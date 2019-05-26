@@ -1,8 +1,21 @@
 class TasksController < ApplicationController
+ #ログインしていないユーザーにはタスク管理を使用させない。
+ before_action :login_required
  before_action :set_task, only: [:show, :edit, :update, :destroy]
  
+ #ログインしていないユーザーはLogin画面へ戻る。
+  def require_user_logged_in
+    unless logged_in?
+      redirect_to login_url
+    end
+  end
+  
+  def login_required
+    redirect_to login_path unless current_user
+  end
+ 
   def index
-      @tasks =Task.all
+      @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
   end
 
   def show
@@ -13,7 +26,7 @@ class TasksController < ApplicationController
   end
 
   def create
-    @task = Task.new(task_params)
+    @task = current_user.tasks.new(task_params)
     
     if @task.save
       flash[:success] = 'Taskが正常に投稿されました'
@@ -46,7 +59,7 @@ class TasksController < ApplicationController
   private
   
   def set_task
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
   end
   
   def task_params
