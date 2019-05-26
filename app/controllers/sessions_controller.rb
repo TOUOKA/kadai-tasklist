@@ -1,12 +1,12 @@
 class SessionsController < ApplicationController
-
+  #ログインしていなくても使用可能にする。
+  skip_before_action :login_required,raise: false
   
   def new
   end
 
   def create
     @task = Task.new
-    
     email = params[:session][:email].downcase
     password = params[:session][:password]
     if login(email, password)
@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
 
   def destroy
     session[:user_id] = nil
-    flash[:success] ='ログアウトしました'
+    flash[:success] = 'ログアウトしました。'
     redirect_to root_url
   end
 

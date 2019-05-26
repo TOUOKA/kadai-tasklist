@@ -1,28 +1,20 @@
 class TasksController < ApplicationController
- #ログインしていないユーザーにはタスク管理を使用させない。
+ #ログインしていないと使用不可
  before_action :login_required
+ #共通項をまとめる
  before_action :set_task, only: [:show, :edit, :update, :destroy]
- 
- #ログインしていないユーザーはLogin画面へ戻る。
-  def require_user_logged_in
-    unless logged_in?
-      redirect_to login_url
-    end
-  end
-  
-  def login_required
-    redirect_to login_path unless current_user
-  end
+
  
   def index
-      @tasks = current_user.tasks.order(id: :desc).page(params[:page]).per(10)
+      @tasks = current_user.tasks
+      #@tasks = Task.order(id: :desc).page(params[:page]).per(3)
   end
 
   def show
   end
 
   def new
-      @task =Task.new
+    @task = Task.new
   end
 
   def create
