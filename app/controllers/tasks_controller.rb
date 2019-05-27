@@ -1,9 +1,9 @@
 class TasksController < ApplicationController
+
  #ログインしていないと使用不可
  before_action :login_required
  #共通項をまとめる
  before_action :set_task, only: [:show, :edit, :update, :destroy]
-
  
   def index
       @tasks = current_user.tasks
@@ -52,6 +52,9 @@ class TasksController < ApplicationController
   
   def set_task
     @task = current_user.tasks.find(params[:id])
+    unless @task
+      redirect_to root_url
+    end
   end
   
   def task_params
